@@ -1,0 +1,47 @@
+import Cache.fifo as fifo
+import Cache.lifo as lifo
+import Cache.lru as lru
+
+
+print('Implementation of FIFO Cache:')
+c = fifo.FIFOCache(2)
+print(c._get(1))
+c.put(1, 100)
+print(c._get(1))
+print('length: ', len(c))
+c.put(2, 200)
+print(c)
+c._clear()
+# print(c._get(1))
+c.put(3, 300)
+print(c)
+print(c._get(1))
+print(c._get(2))
+
+print('\nImplementation of LRU Cache:')
+c = lru.LRUCache(2)
+print(c._get(1))
+c.put(1, 100)
+print(c._get(1))
+c.put(2, 200)
+print(c)
+c.put(3, 300)
+print(c)
+print(c._get(1))
+print(c._get(2))
+
+print('\nImplementation of LIFO Cache:')
+c = lifo.LIFOCache(2)
+print(c._get(1))
+c.put(1, 100)
+print(c._get(1))
+c.put(2, 200)
+print(c)
+c.put(3, 300)
+print(c)
+print(c._get(1))
+print(c._get(2))
+print(c.__contains__(2))
+c.__delkey__(2)
+print(c.__contains__(2))
+
