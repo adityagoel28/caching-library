@@ -41,3 +41,14 @@ An OrderedDict is a dictionary subclass that remembers the order that keys were 
 The `threading` library in Python provides support for multithreaded programming. The `Lock` class in this library provides a simple way to synchronize access to a resource shared by multiple threads. A lock is an object that is used to enforce mutual exclusion, ensuring that only one thread at a time can access a shared resource. The acquire method of the lock can be used to request ownership of the lock, and the release method can be used to release the lock once the thread is finished using the shared resource. This allows multiple threads to work concurrently on the same resource, without interfering with each other.
 <br>
 In the implementation of the LRUCache class, the lock is released when the with statement block for the lock is exited. In other words, the lock is released when the indented code block following the with `self.lock:` statement is completed. This is done in all the methods, where the lock is used to synchronize access to the cache. By releasing the lock after the critical section of code is executed, other threads can acquire the lock and access the shared resource, ensuring that the cache remains available for use by multiple threads.
+
+## Methods Implemented
+- _get - Gets the item, returns the value of the item if it is present, else -1
+- put - Pushes the item into the cache
+- contains - checks and returns a boolean value if the item if present in the cache
+- delkey - Deletes the item form the cache
+- get_length - Gets the current size/length of the cache
+- _clear - Clears the cache
+
+## Final Output
+![image](https://user-images.githubusercontent.com/67872867/217040714-177115a6-2709-4808-9da2-ad4f2a2b8fe0.png)
