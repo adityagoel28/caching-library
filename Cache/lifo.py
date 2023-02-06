@@ -26,20 +26,22 @@ class LIFOCache(OrderedDict):
             if len(self) > self.capacity:
                 self.popitem(last = True)
     
-    def __contains__(self, key) -> bool:
-        if(self.get(key) != None):
-            return True
-        else:
-            return False
+    def contains(self, key) -> bool:
+        with self.lock: # thread safe
+            if(self.get(key) != None):
+                return True
+            else:
+                return False
 
-    def __delkey__(self, key):
-        del self[key]
+    def delkey(self, key):
+        with self.lock: # thread safe
+            del self[key]
 
-    def _len(self):
+    def get_length(self):
         with self.lock:
             return len(self)
 
-    def _clear(self):
+    def _clear(self): # using a different name than the built in clear() method
         """Clear all cache entries."""
         with self.lock:
             self.clear()

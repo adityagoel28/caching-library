@@ -7,15 +7,15 @@ class FIFOCache(OrderedDict):
         """
         :type capacity: int
         """
-        self.capacity = capacity
-        self.lock = Lock()
+        self.capacity = capacity # max capacity of the cache
+        self.lock = Lock() # lock for thread safety
 
     def _get(self, key):
-        with self.lock:
-            if key not in self:
+        with self.lock: # thread safe
+            if key not in self: # if key is not in the cache
                 return -1
             
-            self.move_to_end(key)
+            self.move_to_end(key) # move the key to the end of the cache
             return self[key]
 
     def put(self, key, value):
@@ -23,24 +23,26 @@ class FIFOCache(OrderedDict):
             if key in self:
                 self.move_to_end(key)
             self[key] = value
-            if len(self) > self.capacity:
-                self.popitem(last = False)
+            if len(self) > self.capacity: # if the cache is full
+                self.popitem(last = False) # remove the first item in the cache
 
-    def __contains__(self, key) -> bool:
-        if(self.get(key) != None):
-            return True
-        else:
-            return False
+    def contains(self, key) -> bool: # returns a boolean value
+        with self.lock: # thread safe
+            if(self.get(key) != None): # if the key is in the cache
+                return True
+            else:
+                return False
 
-    def __delkey__(self, key):
-        del self[key]
+    def delkey(self, key):
+        with self.lock: # thread safe
+            del self[key] # delete the key from the cache
 
-    def _len(self):
+    def get_length(self):
         with self.lock:
             return len(self)
 
-    def _clear(self):
+    def _clear(self): # using a different name than the built in clear() method
         """Clear all cache entries."""
         with self.lock:
-            self.clear()
-    # key can be int or strings
+            self.clear() # clear the cache
+    

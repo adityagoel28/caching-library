@@ -11,33 +11,37 @@ class LRUCache(OrderedDict):
         self.lock = Lock()
 
     def _get(self, key):
-        if key not in self:
-            return -1
-        
-        self.move_to_end(key)
-        return self[key]
+        with self.lock: # thread safe
+            if key not in self:
+                return -1
+            
+            self.move_to_end(key)
+            return self[key]
 
     def put(self, key, value):
-        if key in self:
-            self.move_to_end(key)
-        self[key] = value
-        if len(self) > self.capacity:
-            self.popitem(last = False)
+        with self.lock: # thread safe
+            if key in self:
+                self.move_to_end(key)
+            self[key] = value
+            if len(self) > self.capacity:
+                self.popitem(last = False)
     
-    def __contains__(self, key) -> bool:
-        if(self.get(key) != None):
-            return True
-        else:
-            return False
+    def contains(self, key) -> bool:
+        with self.lock: # thread safe
+            if(self.get(key) != None):
+                return True
+            else:
+                return False
 
-    def __delkey__(self, key):
-        del self[key]
+    def delkey(self, key):
+        with self.lock: # thread safe
+            del self[key]
 
-    def _len(self):
+    def get_length(self):
         with self.lock:
             return len(self)
 
-    def _clear(self):
+    def _clear(self): # using a different name than the built in clear() method
         """Clear all cache entries."""
         with self.lock:
             self.clear()
